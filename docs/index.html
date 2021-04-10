@@ -130,12 +130,14 @@ const lox = new Lox(false, logger);
 
 function reset() {
     document.getElementById("code").value = defaultCode.join("\n");
+    logger.output = [];
 }
 
 function run() {
     const code = document.getElementById("code").value;
     lox.run(code);
     document.getElementById("console").value = logger.output.join("\n");
+    logger.output = [];
 }
 
 document.querySelector("button#run").addEventListener("click", run);
