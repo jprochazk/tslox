@@ -4,10 +4,12 @@ A TypeScript implementation of the `Lox` language from [Crafting Interpreters](h
 
 ### Usage
 
+Feel free to use your favorite Node package manager. I'm using Yarn:
+
 Install:
 
 ```
-npm install
+yarn
 ```
 
 Start the interpreter in REPL mode:
