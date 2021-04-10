@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+        <title>TSLox Playground</title>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+            }
+
+            textarea {
+                resize: none;
+            }
+
+            .main {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 80vw;
+                height: 600px;
+                margin: auto;
+            }
+
+            .editor {
+                height: 80%;
+            }
+
+            .editor > textarea {
+                height: 90%;
+                width: 99%;
+                padding: 2px;
+            }
+
+            .console {
+                height: 20%;
+                width: 100%;
+            }
+
+            .console > textarea {
+                width: 99.5%;
+                height: 100px;
+            }
+
+            .main > #title {
+                text-align: left;
+                width: 80vw;
+                margin: auto;
+                margin-top: 15px;
+            }
+
+            .action {
+                width: 50px;
+                height: 35px;
+            }
+        </style>
+    </head>
+    <body>
+        <noscript>JavaScript is required to view the example.</noscript>
+        <div class="main">
+            <h3 id="title">Lox demo</h3>
+            <div class="container">
+                <div class="editor">
+                    <textarea id="code"></textarea>
+                    <button id="run" class="action" type="button">Run</button>
+                    <button id="reset" class="action" type="button">Reset</button>
+                </div>
+                <div class="console">
+                    <textarea disabled id="console"></textarea>
+                </div>
+            </div>
+        </div>
+        <script type="module">
+import { Lox } from "./index.js";
+
+const defaultCode = [
+"class Rectangle {",
+"    init(width, height) {",
+"        this.width = width;",
+"        this.height = height;",
+"    }",
+"",
+"    area {",
+"        return this.width * this.height;",
+"    }",
+"}",
+"",
+"var s = Rectangle(50, 100);",
+"print s.area;",
+"",
+"fun fib(n) {",
+"    if (n <= 1) return n;",
+"    return fib(n - 1) + fib(n - 2);",
+"}",
+"print fib(9);"
+];
+
+
+const logger = {
+    output: [],
+    log: function (...data) {
+        for (const item of data) {
+            this.output.push(item);
+        }
+    },
+    warn: function (...data) {
+        for (const item of data) {
+            this.output.push(item);
+        }
+    },
+    error: function (...data) {
+        for (const item of data) {
+            this.output.push(item);
+        }
+    }
+}
+
+const lox = new Lox(false, logger);
+
+function reset() {
+    document.getElementById("code").value = defaultCode.join("\n");
+}
+
+function run() {
+    const code = document.getElementById("code").value;
+    lox.run(code);
+    document.getElementById("console").value = logger.output.join("\n");
+}
+
+document.querySelector("button#run").addEventListener("click", run);
+document.querySelector("button#reset").addEventListener("click", reset);
+reset();
+        </script>
+    </body>
+</html>
