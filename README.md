@@ -1,6 +1,6 @@
 # lox
 
-An implementation of the `Lox` language, from [this book](http://craftinginterpreters.com/).
+A TypeScript implementation of the `Lox` language from [Crafting Interpreters](http://craftinginterpreters.com/).
 
 ### Usage
 
@@ -26,12 +26,12 @@ In REPL mode, you can either input an expression which will be evaluated and pri
 10
 ```
 
-Causing an error of any kind does not cause the interpreter to enter an invalid state:
+Causing an error of any kind does not cause the interpreter to enter an invalid state, so you can just keep going:
 
 ```
 > a
 [line 1] Error: Undefined variable 'a'
-    .... call stack
+    .... interpreter call stack
 > var (a) = 10;
 [line 1] Expected identifier after 'var' statement
 ```
@@ -52,7 +52,7 @@ Hello, Lox!
 
 ### Features
 
-On top of what `Lox` can already do, this implementation also provides:
+This should be a (mostly) standard implementation of `Lox`. There is no test suite, so there's a possibility some things are broken. At the very least, every example in the book should work. I've implemented some extra features on top of what's in the book (some of these are from the challenges in the book):
 
 The `**` (power) and `%` (modulo) operators:
 
