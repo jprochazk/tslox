@@ -114,7 +114,6 @@ export class ClassInstance {
         if (method !== undefined) return method.bind(this);
 
         return null;
-        /* throw new LoxError(name.line, `Undefined property '${name.lexeme}'`); */
     }
 
     getOpt(name: Token): Value | undefined {
@@ -192,7 +191,6 @@ export class ClassImpl extends ClassInstance {
         if (value !== undefined) return value;
 
         return null;
-        /* throw new LoxError(name.line, `Undefined property '${name.lexeme}'`); */
     }
 
     getStaticOpt(name: Token): Value | undefined {
@@ -258,7 +256,6 @@ export class NativeClassInstance {
         if (method !== undefined) return method.bind(this);
 
         return null;
-        /* throw new LoxError(name.line, `Undefined property '${name.lexeme}'`); */
     }
 
     getOpt(name: Token): Value | undefined {
@@ -326,7 +323,6 @@ export class NativeClassImpl extends NativeClassInstance {
         if (value !== undefined) return value;
 
         return null;
-        /* throw new LoxError(name.line, `Undefined property '${name.lexeme}'`); */
     }
 
     getStaticOpt(name: Token): Value | undefined {
