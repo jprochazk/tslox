@@ -54,7 +54,29 @@ Hello, Lox!
 
 ### Features
 
-This should be a (mostly) standard implementation of `Lox`. There is no test suite, so there's a possibility some things are broken. At the very least, every example in the book should work. I've implemented some extra features on top of what's in the book (some of these are from the challenges in the book):
+This should be a (mostly) standard implementation of `Lox`. There is no test suite, so there's a possibility some things are broken. At the very least, every example in the book should work.
+
+There is one major difference, which is undefined property access does not throw an error, but returns `nil`:
+
+```go
+class Object {}
+var obj = Object();
+print obj.a; // prints: nil
+```
+
+The problem with throwing an error is that there is no way to know if a property exists before trying to access it. Returning `nil` allows you to check it. It creates a new problem, which is that there is no difference between a field with the value `nil` and a field that doesn't exist:
+
+```go
+class Object {}
+var obj = Object();
+print obj.a; // nil
+obj.a = nil;
+print obj.a; // also nil
+```
+
+My opinion is that this is more acceptable behavior than throwing an error. It could further be solved by adding a special type, `undefined`. This is what JavaScript does, and it would work well, if only JavaScript didn't also make the mistake of allowing users to assign the value `undefined` to something, which means that `undefined` doesn't really mean `undefined` and thus the problem persists.
+
+I've also implemented some extra features on top of what's in the book (some of these are from the challenges in the book):
 
 The `**` (power) and `%` (modulo) operators:
 
@@ -103,7 +125,7 @@ var obj = Object();
 obj.a = 10;
 print obj.a; // prints: 10
 delete obj.a;
-print obj.a; // throws: Undefined property 'a'
+print obj.a; // prints: nil
 ```
 
 ```go

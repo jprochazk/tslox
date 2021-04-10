@@ -113,7 +113,8 @@ export class ClassInstance {
         const method = this.proto.findMethod(name.lexeme);
         if (method !== undefined) return method.bind(this);
 
-        throw new LoxError(name.line, `Undefined property '${name.lexeme}'`);
+        return null;
+        /* throw new LoxError(name.line, `Undefined property '${name.lexeme}'`); */
     }
 
     getOpt(name: Token): Value | undefined {
@@ -190,7 +191,8 @@ export class ClassImpl extends ClassInstance {
         const value = this.fields.get(name.lexeme) ?? this.superclass?.getStatic(name);
         if (value !== undefined) return value;
 
-        throw new LoxError(name.line, `Undefined property '${name.lexeme}'`);
+        return null;
+        /* throw new LoxError(name.line, `Undefined property '${name.lexeme}'`); */
     }
 
     getStaticOpt(name: Token): Value | undefined {
@@ -255,7 +257,8 @@ export class NativeClassInstance {
         const method = this.proto.findMethod(name.lexeme);
         if (method !== undefined) return method.bind(this);
 
-        throw new LoxError(name.line, `Undefined property '${name.lexeme}'`);
+        return null;
+        /* throw new LoxError(name.line, `Undefined property '${name.lexeme}'`); */
     }
 
     getOpt(name: Token): Value | undefined {
@@ -322,7 +325,8 @@ export class NativeClassImpl extends NativeClassInstance {
         const value = this.fields.get(name.lexeme);
         if (value !== undefined) return value;
 
-        throw new LoxError(name.line, `Undefined property '${name.lexeme}'`);
+        return null;
+        /* throw new LoxError(name.line, `Undefined property '${name.lexeme}'`); */
     }
 
     getStaticOpt(name: Token): Value | undefined {
@@ -407,9 +411,9 @@ export class Interpreter implements Ast.Expr.Visitor<Value>, Ast.Stmt.Visitor<vo
     constructor(
         readonly ctx: Context
     ) {
-        this.globals.define("type", makefn("type", 1, (_, [v]) => type(v)));
-        this.globals.define("time", makefn("time", 0, () => Date.now()));
-        this.globals.define("str", makefn("str", 1, (_, [v]) => stringify(v)));
+        this.globals.define(makefn("type", 1, (_, [v]) => type(v)));
+        this.globals.define(makefn("time", 0, () => Date.now()));
+        this.globals.define(makefn("str", 1, (_, [v]) => stringify(v)));
     }
 
     interpret(stmtList: Ast.Stmt[]): void {
@@ -732,17 +736,11 @@ export class Interpreter implements Ast.Expr.Visitor<Value>, Ast.Stmt.Visitor<vo
         const object = this.env.getUncheckedAt(depth - 1, "this") as ClassInstance;
         if (object === undefined) {
             // static context
-            const value = superclass.getStaticOpt(expr.value);
-            if (value === undefined) {
-                throw new LoxError(expr.keyword.line, `Undefined property '${expr.value.lexeme}'`);
-            }
+            const value = superclass.getStaticOpt(expr.value) ?? null;
             return value;
         } else {
             // instance context
-            const value = superclass.getOpt(expr.value);
-            if (value === undefined) {
-                throw new LoxError(expr.keyword.line, `Undefined property '${expr.value.lexeme}'`);
-            }
+            const value = superclass.getOpt(expr.value) ?? null;
             if (type(value) === "func") {
                 return (<FuncImpl>value).bind(object);
             }
