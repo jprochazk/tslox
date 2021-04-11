@@ -79,7 +79,7 @@ export class Resolver implements Ast.Expr.Visitor<void>, Ast.Stmt.Visitor<void> 
     resolve(list: (Ast.Stmt | Ast.Expr | null | undefined)[]): void {
         for (let i = 0; i < list.length; ++i) {
             const item = list[i];
-            if (item) item.accept(this);
+            if (item) (<any>item).accept(this);
         }
     }
     private resolveLocal(expr: Ast.Expr, name: Token): void {
